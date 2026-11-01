@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gomes Germano | IAM & SysAdmin Engineer</title>
+  <meta name="description" content="IAM & System Administration specialist portfolio"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary:    #0a0e1a;
+      --bg-secondary:  #0d1225;
+      --bg-card:       #111827;
+      --bg-card-hover: #1a2236;
+      --cyan:          #00d4ff;
+      --cyan-dim:      #00a8cc;
+      --blue:          #3b82f6;
+      --blue-dim:      #1d4ed8;
+      --text-primary:  #e2e8f0;
+      --text-secondary:#94a3b8;
+      --text-muted:    #475569;
+      --border:        #1e2d45;
+      --border-glow:   rgba(0, 212, 255, 0.3);
+      --gradient-hero: linear-gradient(135deg, #0a0e1a 0%, #0d1225 50%, #0a1628 100%);
+      --gradient-cyan: linear-gradient(135deg, #00d4ff, #3b82f6);
+      --shadow-card:   0 4px 24px rgba(0,0,0,0.4);
+      --shadow-glow:   0 0 20px rgba(0, 212, 255, 0.15);
+      --radius:        12px;
+      --transition:    all 0.3s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ===================== SCROLLBAR ===================== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 3px; }
+
+    /* ===================== UTILITIES ===================== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 90px 0; }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: var(--gradient-cyan);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 48px;
+      font-family: 'Fira Code', monospace;
+    }
+    .section-subtitle::before { content: '// '; color: var(--cyan); }
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'Fira Code', monospace;
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      margin: 4px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--gradient-cyan);
+      color: #000;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+    .btn-outline {
+      background: transparent;
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+    }
+    .btn-outline:hover { background: rgba(0,212,255,0.1); transform: translateY(-2px); }
+
+    /* ===================== NAV ===================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10, 14, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--cyan);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text-secondary); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--cyan);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-toggle { display: none; background: none; border: none; color: var(--cyan); font-size: 1.4rem; cursor: pointer; }
+
+    /* ===================== HERO ===================== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: var(--gradient-hero);
+      position: relative;
+      overflow: hidden;
+      padding-top: 64px;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: -150px; left: -150px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      font-size: 0.8rem;
+      font-family: 'Fira Code', monospace;
+      color: var(--cyan);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .hero-title .name { display: block; }
+    .hero-title .role {
+      display: block;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 400;
+      background: var(--gradient-cyan);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'Fira Code', monospace;
+    }
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin: 20px 0 32px;
+      max-width: 480px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .stat-card:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); }
+    .stat-number { font-size: 2rem; font-weight: 800; color: var(--cyan); font-family: 'Fira Code', monospace; }
+    .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+    
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .terminal {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 460px;
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      overflow: hidden;
+    }
+    .terminal-header {
+      background: #161b22;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .terminal-dot.red   { background: #ff5f57; }
+    .terminal-dot.yellow{ background: #febc2e; }
+    .terminal-dot.green { background: #28c840; }
+    .terminal-title { color: var(--text-muted); font-size: 0.8rem; font-family: 'Fira Code', monospace; margin-left: 8px; }
+    .terminal-body { padding: 24px; font-family: 'Fira Code', monospace; font-size: 0.82rem; line-height: 2; }
+    .t-prompt { color: var(--cyan); }
+    .t-cmd    { color: var(--text-primary); }
+    .t-out    { color: #22c55e; }
+    .t-comment{ color: var(--text-muted); }
+    .t-key    { color: #f59e0b; }
+    .t-val    { color: var(--blue); }
+    .cursor   { display: inline-block; width: 8px; height: 14px; background: var(--cyan); animation: blink 1s infinite; vertical-align: middle; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ===================== ABOUT ===================== */
+    #about { background: var(--bg-secondary); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .about-text p { color: var(--text-secondary); margin-bottom: 16px; }
+    .about-text p strong { color: var(--text-primary); }
+    .about-highlights { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+    .highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .highlight-item:hover { border-color: var(--border-glow); }
+    .highlight-icon { color: var(--cyan); font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
+    .highlight-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+    .highlight-item p { font-size: 0.82rem; color: var(--text-secondary); margin: 0; }
+    .about-info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 0.8rem; color: var(--text-muted); font-family: 'Fira Code', monospace; }
+    .info-value { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; }
+    .info-value a { color: var(--cyan); text-decoration: none; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 20px;
+      background: rgba(34,197,94,0.1); color: #22c55e;
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .status-badge .dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+
+    /* ===================== SKILLS ===================== */
+    #skills { background: var(--bg-primary); }
+    .skills-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .skill-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--transition);
+    }
+    .skill-category:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); transform: translateY(-4px); }
+    .skill-category-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .skill-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(0,212,255,0.1); display: flex; align-items: center; justify-content: center; color: var(--cyan); font-size: 1.1rem; flex-shrink: 0; }
+    .skill-category h3 { font-size: 1rem; font-weight: 600; }
+    .skill-list { display: flex; flex-direction: column; gap: 12px; }
+    .skill-item { display: flex; align-items: center; justify-content: space-between; }
+    .skill-name { font-size: 0.85rem; color: var(--text-secondary); }
+    .skill-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; margin: 0 12px; overflow: hidden; }
+    .skill-fill { height: 100%; border-radius: 2px; background: var(--gradient-cyan); transition: width 1s ease; }
+    .skill-pct { font-size: 0.75rem; color: var(--cyan); font-family: 'Fira Code', monospace; min-width: 32px; text-align: right; }
+
+    /* ===================== EXPERIENCE ===================== */
+    #experience { background: var(--bg-secondary); }
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--cyan), var(--blue), transparent); }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-item::before { content: ''; position: absolute; left: -38px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg-secondary); box-shadow: 0 0 8px var(--cyan); }
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--transition);
+    }
+    .timeline-card:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); }
+    .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+    .timeline-title { font-size: 1.1rem; font-weight: 700; }
+    .timeline-period { font-family: 'Fira Code', monospace; font-size: 0.78rem; color: var(--cyan); background: rgba(0,212,255,0.1); padding: 4px 10px; border-radius: 20px; }
+    .timeline-company { color: var(--blue); font-weight: 500; font-size: 0.9rem; margin-bottom: 12px; }
+    .timeline-subtitle { color: var(--cyan); font-weight: 600; font-size: 0.88rem; margin: 12px 0 6px 0; }
+    .timeline-desc { color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 16px; }
+    .timeline-bullets { list-style: none; margin-bottom: 16px; }
+    .timeline-bullets li { font-size: 0.85rem; color: var(--text-secondary); padding: 4px 0 4px 20px; position: relative; }
+    .timeline-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); }
+    .timeline-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+    /* ===================== CERTIFICATIONS ===================== */
+    #certifications { background: var(--bg-primary); }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .cert-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+    .cert-card:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); transform: translateY(-4px); }
+    .cert-icon { font-size: 2rem; flex-shrink: 0; }
+    .cert-info h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .cert-info .cert-org { font-size: 0.78rem; color: var(--cyan); font-family: 'Fira Code', monospace; margin-bottom: 6px; }
+    .cert-info .cert-date { font-size: 0.75rem; color: var(--text-muted); }
+    .cert-status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; margin-top: 6px; }
+    .cert-status.active { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .cert-status.progress { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+    /* ===================== PROJECTS ===================== */
+    #projects { background: var(--bg-secondary); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); transform: translateY(-4px); }
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .project-icon { font-size: 1.8rem; }
+    .project-links { display: flex; gap: 8px; }
+    .project-link { color: var(--text-muted); font-size: 1rem; text-decoration: none; transition: var(--transition); }
+    .project-link:hover { color: var(--cyan); }
+    .project-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .project-desc { font-size: 0.85rem; color: var(--text-secondary); flex: 1; margin-bottom: 16px; }
+    .project-tags { display: flex; flex-wrap: wrap; margin-top: auto; }
+
+    /* ===================== CONTACT ===================== */
+    #contact { background: var(--bg-primary); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+    .contact-info h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+    .contact-info p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 32px; }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: var(--transition);
+      color: var(--text-primary);
+    }
+    .contact-link-item:hover { border-color: var(--border-glow); box-shadow: var(--shadow-glow); transform: translateX(4px); }
+    .contact-link-item i { color: var(--cyan); font-size: 1.2rem; width: 24px; text-align: center; }
+    .contact-link-item span { font-size: 0.9rem; }
+    .contact-link-item small { display: block; font-size: 0.75rem; color: var(--text-muted); }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.8rem; color: var(--text-muted); font-family: 'Fira Code', monospace; }
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
+    .form-group textarea { height: 130px; }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+    }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .footer-logo { font-family: 'Fira Code', monospace; color: var(--cyan); font-size: 0.9rem; }
+    .footer-socials { display: flex; gap: 16px; }
+    .footer-social { color: var(--text-muted); font-size: 1.2rem; text-decoration: none; transition: var(--transition); }
+    .footer-social:hover { color: var(--cyan); transform: translateY(-2px); }
+    .footer-copy { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(10,14,26,0.97); padding: 24px; gap: 20px; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: block; }
+      .hero-grid,
+      .about-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+      .section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<nav id="navbar">
+  <div class="container nav-inner">
+    <a href="#hero" class="nav-logo">cyber<span>.iam</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Available for opportunities
+        </div>
+        <h1 class="hero-title">
+          <span class="name">Gomes Germano</span>
+          <span class="role">IAM System Engineer</span>
+        </h1>
+        <p class="hero-desc">
+          Specialist in <strong>Identity & Access Management</strong> and <strong>Systems Administration</strong>. 
+          Securing identities, automating infrastructure and enabling Zero Trust architectures in hybrid and cloud environments.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary"><i class="fas fa-envelope"></i> Get in Touch</a>
+          <a href="#experience" class="btn btn-outline"><i class="fas fa-briefcase"></i> View Work</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-number">3+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Certifications</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">2+</div>
+            <div class="stat-label">Projects Delivered</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">cyber.iam_session.sh</span>
+          </div>
+          <div class="terminal-body">
+            <p><span class="t-prompt">visitor@portfolio:~$</span> <span class="t-cmd">curl -s https://api.identity.eng/profile</span></p>
+            <p class="t-out">{</p>
+            <p>&nbsp;&nbsp;<span class="t-key">"status":</span> <span class="t-val">"Active"</span>,</p>
+            <p>&nbsp;&nbsp;<span class="t-key">"focus":</span> <span class="t-val">"IAM & PAM Infrastructure"</span>,</p>
+            <p>&nbsp;&nbsp;<span class="t-key">"automation":</span> <span class="t-val">["PowerShell", "Python"]</span>,</p>
+            <p>&nbsp;&nbsp;<span class="t-key">"core_auth":</span> <span class="t-val">"Entra ID / Active Directory / CyberArk"</span></p>
+            <p class="t-out">}</p>
+            <p><span class="t-prompt">visitor@portfolio:~$</span> <span class="t-cmd">secure-access --init</span><span class="cursor"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ABOUT ==================== -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-subtitle">whoami</p>
+        <p>
+          Dedicated IAM System Engineer and Systems Administrator with over 3 years of experience securing hybrid directory infrastructures, privileged access (PAM), and identity lifecycles in high-compliance environments, including major financial institutions.
+        </p>
+        <p>
+          Expertise in administering critical Active Directory (AD DS, AD FS, AD CS) and Microsoft Entra ID environments, enforcing Zero Trust frameworks through Conditional Access, MFA/Passwordless authentication, and PKI/certificate management. Specialized in Privileged Access Management operating the CyberArk suite (Digital Vault, CPM, PSM, Conjur), automated credential rotation, and Just-In-Time (JIT) access workflows.
+        </p>
+        <p>
+          Experienced in identity governance (SailPoint, Entra ID PIM) and automating compliance checking, operational reporting, and account provisioning using PowerShell and Python. Proven track record in incident triage, SOC collaboration, and audit-ready operations under strict SLAs.
+        </p>
+        <div class="about-highlights">
+          <div class="highlight-item">
+            <i class="fas fa-shield-alt highlight-icon"></i>
+            <div>
+              <h4>Identity First Security</h4>
+              <p>Designing modern Single Sign-On (SSO), Multi-Factor Authentication (MFA), and lifecycle workflows.</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <i class="fas fa-terminal highlight-icon"></i>
+            <div>
+              <h4>Infrastructure Automation</h4>
+              <p>Eliminating configuration drift and manual user provisioning overhead via programmatic infrastructure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="about-info-card">
+        <div class="info-row">
+          <span class="info-label">Availability</span>
+          <span class="status-badge"><span class="dot"></span>Open for Roles</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Main Location</span>
+          <span class="info-value">Lisbon / Portugal</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Preferred Environment</span>
+          <span class="info-value">Hybrid / Remote</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value"><a href="mailto:gomesluisgermano@gmail.com">gomesluisgermano@gmail.com</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SKILLS ==================== -->
+<section id="skills" class="section">
+  <div class="container">
+    <h2 class="section-title">Technical Expertise</h2>
+    <p class="section-subtitle">skills_matrix --visualize</p>
+    
+    <div class="skills-categories">
+      <div class="skill-category">
+        <div class="skill-category-header">
+          <div class="skill-icon"><i class="fas fa-fingerprint"></i></div>
+          <h3>Identity & Access</h3>
+        </div>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="skill-name">Microsoft Entra ID / Okta</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 90%;"></div></div>
+            <span class="skill-pct">90%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">SAML / OIDC / OAuth</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            <span class="skill-pct">85%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Active Directory (AD DS/FS/CS)</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 95%;"></div></div>
+            <span class="skill-pct">95%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <div class="skill-category-header">
+          <div class="skill-icon"><i class="fas fa-key"></i></div>
+          <h3>PAM & Governance</h3>
+        </div>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="skill-name">CyberArk Suite</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            <span class="skill-pct">85%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">SailPoint & Entra ID PIM</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 80%;"></div></div>
+            <span class="skill-pct">80%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">PKI / AD CS & Certificates</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            <span class="skill-pct">85%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <div class="skill-category-header">
+          <div class="skill-icon"><i class="fas fa-server"></i></div>
+          <h3>SysAdmin & Automation</h3>
+        </div>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="skill-name">PowerShell & Python</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            <span class="skill-pct">85%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Windows Server / Linux</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 88%;"></div></div>
+            <span class="skill-pct">88%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">ServiceNow / ITSM</span>
+            <div class="skill-bar"><div class="skill-fill" style="width: 90%;"></div></div>
+            <span class="skill-pct">90%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EXPERIENCE ==================== -->
+<section id="experience" class="section">
+  <div class="container">
+    <h2 class="section-title">Professional Experience</h2>
+    <p class="section-subtitle">history | grep "engineering"</p>
+    
+    <div class="timeline">
+      <!-- Item 1: WO IAM System Engineer -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-title">WO IAM System Engineer</h3>
+            <span class="timeline-period">Sep 2026 - Present</span>
+          </div>
+          <p class="timeline-company">Claranet Portugal</p>
+
+          <h4 class="timeline-subtitle">Core Identity & Directory Infrastructure</h4>
+          <ul class="timeline-bullets">
+            <li>Administer critical Active Directory (AD DS, AD FS, AD CS) infrastructure, monitoring replication health, FSMO role availability, DNS/DHCP services, and GPO compliance baselines.</li>
+            <li>Manage end-to-end identity lifecycles in Microsoft Entra ID, enforcing Conditional Access policies, MFA/Passwordless authentication, and external (B2B) identity governance.</li>
+            <li>Ensure operational continuity of federation services and Public Key Infrastructure (PKI/AD CS), managing digital certificate issuance, templates, and renewals.</li>
+          </ul>
+
+          <h4 class="timeline-subtitle">Privileged Access Management (PAM) & Governance</h4>
+          <ul class="timeline-bullets">
+            <li>Operate the CyberArk suite (Digital Vault, CPM, PSM, Conjur), onboarding privileged accounts across Windows, Linux, databases, and network platforms.</li>
+            <li>Enforce least-privilege principles by configuring automated credential rotation policies and time-bound, Just-In-Time (JIT) access workflows.</li>
+            <li>Support identity governance operations using SailPoint and Entra ID PIM, executing access certification campaigns, entitlement reviews, and privilege elevation processing.</li>
+          </ul>
+
+          <h4 class="timeline-subtitle">Automation, Incident Response & Compliance</h4>
+          <ul class="timeline-bullets">
+            <li>Build and maintain PowerShell and Python scripts for identity compliance checking, operational reporting, and provisioning automation.</li>
+            <li>Resolve identity and PAM incidents within defined SLAs while maintaining audit-ready records, SOPs, and runbooks in ServiceNow.</li>
+            <li>Collaborate with SOC teams on identity threat triage, providing session recordings, access logs, and forensic evidence for security investigations.</li>
+          </ul>
+
+          <div class="timeline-tags">
+            <span class="tag">Active Directory</span>
+            <span class="tag">Entra ID</span>
+            <span class="tag">CyberArk</span>
+            <span class="tag">SailPoint</span>
+            <span class="tag">PIM</span>
+            <span class="tag">PKI/AD CS</span>
+            <span class="tag">PowerShell</span>
+            <span class="tag">Python</span>
+            <span class="tag">ServiceNow</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2: IT Service Technician & IAM Support Analyst -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-title">IT Service Technician & IAM Support Analyst</h3>
+            <span class="timeline-period">Oct 2023 - Aug 2026</span>
+          </div>
+          <p class="timeline-company">Claranet Portugal</p>
+          <p class="timeline-desc">Serving as the primary point of contact for Identity and Access Management (IAM) operations for a major banking group, focusing on security, compliance, and streamlined access across organizational systems.</p>
+          
+          <ul class="timeline-bullets">
+            <li><strong>Identity Lifecycle Management (ILM):</strong> Manage the end-to-end user lifecycle, ensuring the timely provisioning of accounts for new hires and the immediate revocation of access during offboarding to maintain strict security compliance.</li>
+            <li><strong>Access & Certificate Administration:</strong> Administer access rights and digital certificates for critical financial and GRC (Governance, Risk Management, and Compliance) applications, including Western Union, MetricStream, and JVRIS.</li>
+            <li><strong>Policy Enforcement:</strong> Enforce the Principle of Least Privilege (POLP) when processing access requests and reviewing user entitlements.</li>
+            <li><strong>Hybrid Support & Troubleshooting:</strong> Provide L1 and L2 support for hybrid infrastructure environments (On-Premises and Azure), ensuring high service availability. Diagnose authentication issues and escalate complex identity incidents to L3 engineering teams.</li>
+            <li><strong>Security Audits:</strong> Collaborate actively with security teams to audit active accounts and verify compliance with global corporate security policies.</li>
+          </ul>
+
+          <div class="timeline-tags">
+            <span class="tag">IAM Operations</span>
+            <span class="tag">Identity Lifecycle</span>
+            <span class="tag">Least Privilege (POLP)</span>
+            <span class="tag">Azure / Hybrid</span>
+            <span class="tag">Certificate Admin</span>
+            <span class="tag">Security Audits</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3: Service Desk Trainee -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-title">Service Desk Trainee</h3>
+            <span class="timeline-period">Aug 2023 - Oct 2023</span>
+          </div>
+          <p class="timeline-company">Claranet Portugal</p>
+          <ul class="timeline-bullets">
+            <li><strong>Single Point of Contact (SPOC):</strong> Managed end-to-end communication between IT and users, ensuring seamless resolution of technical issues and service requests.</li>
+            <li><strong>Incident & Problem Management:</strong> Restored critical service operations efficiently to minimize business downtime and operational impact.</li>
+            <li><strong>SLA Adherence:</strong> Consistently met or exceeded Service Level Agreements (SLAs) by strategically prioritizing tickets based on urgency and business criticality.</li>
+            <li><strong>Knowledge Management:</strong> Authored and maintained technical documentation and Standard Operating Procedures (SOPs), significantly increasing first-call resolution (FCR) rates.</li>
+            <li><strong>Technical Support:</strong> Delivered comprehensive remote and on-site troubleshooting for hardware, software (Office 365, Active Directory), and network connectivity.</li>
+            <li><strong>Access Control & ITSM:</strong> Gained hands-on experience in enterprise Identity and Access Management (IAM) and IT Service Management frameworks.</li>
+          </ul>
+
+          <div class="timeline-tags">
+            <span class="tag">ITSM / ITIL</span>
+            <span class="tag">Active Directory</span>
+            <span class="tag">Service Desk</span>
+            <span class="tag">Access Control</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CERTIFICATIONS ==================== -->
+<section id="certifications" class="section">
+  <div class="container">
+    <h2 class="section-title">Certifications</h2>
+    <p class="section-subtitle">cat credentials.json</p>
+    
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-icon">🥇</div>
+        <div class="cert-info">
+          <h4>ITIL® 4 Foundation Certificate in IT Service Management</h4>
+          <p class="section-subtitle cert-org">PEOPLE CERT / AXELOS</p>
+          <p class="cert-date">Issued: 2024</p>
+          <span class="cert-status active">Active</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">☁️</div>
+        <div class="cert-info">
+          <h4>Microsoft Certified: Identity and Access Administrator Associate</h4>
+          <p class="section-subtitle cert-org">Microsoft (SC-300)</p>
+          <p class="cert-date">Issued: 2026</p>
+          <span class="cert-status active">Active</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🌐</div>
+        <div class="cert-info">
+          <h4>CCNAv7: Introduction to Networks</h4>
+          <p class="section-subtitle cert-org">Cisco Networking Academy</p>
+          <p class="cert-date">Issued: 2023</p>
+          <span class="cert-status active">Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROJECTS ==================== -->
+<section id="projects" class="section">
+  <div class="container">
+    <h2 class="section-title">Featured Infrastructure Projects</h2>
+    <p class="section-subtitle">git log --oneline -n 3</p>
+    
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🛡️</div>
+          <div class="project-links">
+            <a href="#" class="project-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <h3 class="project-title">MidPoint IGA Lab on CentOS</h3>
+        <p class="project-desc">Architected a local Identity Governance lab using MidPoint on a Linux CentOS environment, automating Joiner and Leaver workflows by synchronising a simulated HR data source to an OpenLDAP target directory. Implemented role-based account provisioning and account disable logic triggered by employee status changes.</p>
+        <div class="project-tags">
+          <span class="tag">MidPoint</span>
+          <span class="tag">CentOS</span>
+          <span class="tag">OpenLDAP</span>
+          <span class="tag">IGA</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🔑</div>
+          <div class="project-links">
+            <a href="#" class="project-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <h3 class="project-title">Auth0 SAML/OIDC Federation</h3>
+        <p class="project-desc">Configured SAML and OIDC federation using Auth0, connecting a test application to an identity provider and validating token flows end to end.</p>
+        <div class="project-tags">
+          <span class="tag">Auth0</span>
+          <span class="tag">SAML</span>
+          <span class="tag">OIDC</span>
+          <span class="tag">OAuth2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="section-subtitle">ssh connection --establish</p>
+        <p>I am always open to exploring modern identity engineering architectures, hybrid orchestration optimizations, or security role openings.</p>
+        
+        <div class="contact-links">
+          <a href="https://linkedin.com/in/gomes-germano-530b4521a/" target="_blank" rel="noopener" class="contact-link-item">
+            <i class="fab fa-linkedin"></i>
+            <div>
+              <span>LinkedIn</span>
+              <small>Professional Network</small>
+            </div>
+          </a>
+          <a href="https://github.com/[[YOUR-PROFILE]]" target="_blank" rel="noopener" class="contact-link-item">
+            <i class="fab fa-github"></i>
+            <div>
+              <span>GitHub</span>
+              <small>Infrastructure & Code Repositories</small>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="contact-form-wrapper">
+        <form class="contact-form" action="#" method="POST">
+          <div class="form-group">
+            <label for="name">Sender Name</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Identity Endpoint (Email)</label>
+            <input type="email" id="email" name="email" placeholder="john@domain.com" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Payload Description (Message)</label>
+            <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send Query</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-logo">cyber.iam</div>
+    <div class="footer-socials">
+      <a href="#" class="footer-social" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="#" class="footer-social" aria-label="GitHub"><i class="fab fa-github"></i></a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Gomes Germano. All rights reserved. Enforcing least privilege access metrics.</p>
+  </div>
+</footer>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+  // Simple Mobile Navigation Toggle Toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if(navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const icon = navToggle.querySelector('i');
+      if (icon.classList.contains('fa-bars')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Close mobile menu on click link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        const icon = navToggle.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      });
+    });
+  }
+</script>
+</body>
+</html>
